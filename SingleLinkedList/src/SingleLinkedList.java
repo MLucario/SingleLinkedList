@@ -285,14 +285,18 @@ public class SingleLinkedList<T> {
 		System.out.println(list.numberNode);
 		
 		//no cycle
-		System.out.println(list.checkCycle(list));
-		
+		System.out.println(list.isCycle(list));
+		list.deleteCycle(list);
 		
 		//Let add an cycle from node 5 to node 3
 		Node<Integer> temp = list.getNodeAt(5);
 		System.out.println(temp.getData());
 		temp.setNextNode(list.getNodeAt(3));
-		System.out.println("Cycle check : " + list.checkCycle(list));
+		System.out.println("Cycle check : " + list.isCycle(list));
+		list.deleteCycle(list);
+		System.out.println(list.toString());
+
+		
 		
 		
 /**
@@ -327,7 +331,12 @@ public class SingleLinkedList<T> {
 		//System.out.println(list.findFromTheEnd(2).getData());
 	}
 	
-	public boolean checkCycle(SingleLinkedList<T> list){
+	
+	
+	/*8
+	 * Floyd algorithm to detect cycle in linked list
+	 */
+	public boolean isCycle(SingleLinkedList<T> list){
 		
 		Node<T> fast = list.getHead();
 		Node<T> slow = list.getHead();
@@ -339,6 +348,42 @@ public class SingleLinkedList<T> {
 				return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * How to delete the cycle in linked list
+	 * @param list
+	 */
+	public void deleteCycle(SingleLinkedList<T> list) {
+
+		//Detect the cycle in linked list
+		Node<T> fast = list.getHead();
+		Node<T> slow = list.getHead();
+		
+		while(fast.getNextNode()!=null && slow!= null && fast != null) {
+			fast = fast.getNextNode().getNextNode();
+			slow = slow.getNextNode();
+			if( slow == fast)
+				break;
+		}
+		
+		
+		// From here will delete the cycle if we FOUND
+		if(slow == fast) {  // if we find the cycle
+			slow = head;   // set slow to head
+			
+			// increate by one note for both slow and fast node
+			while(slow.getNextNode() != fast.getNextNode()) { 
+				slow = slow.getNextNode();
+				fast = fast.getNextNode();
+			}
+			
+			// delete the next of fast node SET TO NULL to have uncycle linked list
+			fast.setNextNode(null);
+		}
+		else {
+			System.out.println("List does not have cycle");
+		}
 	}
 
 }
