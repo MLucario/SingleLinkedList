@@ -209,19 +209,27 @@ public class SingleLinkedList<T> {
 	}
 	
 	public Node<T> getNodeAt(T value) {
-		if(isEmpty())
-			return null;
-		while(true) {
-			Node<T> temp = head;
-			if(temp.compareTo(value)==0) {
-				return temp;
-			}
-			if(temp.getNextNode()==null)
-				break;
-			temp = temp.getNextNode();
-			
+		boolean notFound = true;
+		Node<T> temp = head;
+		if(isEmpty()) {
+			temp = null;
 		}
-		return null;
+		else {
+			
+			
+			while(temp!=null) {
+				if(temp.compareTo(value)==1) {
+					notFound = false;
+					return temp;
+				}
+				temp = temp.getNextNode();
+				
+			}
+			if(notFound)
+				temp = null;
+		}
+		return temp;
+		
 	}
 	
 	//Insertion sort
@@ -256,6 +264,13 @@ public class SingleLinkedList<T> {
 		return nodeFound;
 	}
 
+	
+
+	public Node<T> getHead() {
+		return head;
+	}
+
+
 	public static void main(String[] args) {
 		SingleLinkedList<Integer> list = new SingleLinkedList<Integer>();
 		
@@ -268,6 +283,18 @@ public class SingleLinkedList<T> {
 		
 		System.out.println(list.toString());
 		System.out.println(list.numberNode);
+		
+		//no cycle
+		System.out.println(list.checkCycle(list));
+		
+		
+		//Let add an cycle from node 5 to node 3
+		Node<Integer> temp = list.getNodeAt(5);
+		System.out.println(temp.getData());
+		temp.setNextNode(list.getNodeAt(3));
+		System.out.println("Cycle check : " + list.checkCycle(list));
+		
+		
 /**
 		 
 
@@ -297,7 +324,21 @@ public class SingleLinkedList<T> {
  */
 		
 		
-		System.out.println(list.findFromTheEnd(2).getData());
+		//System.out.println(list.findFromTheEnd(2).getData());
+	}
+	
+	public boolean checkCycle(SingleLinkedList<T> list){
+		
+		Node<T> fast = list.getHead();
+		Node<T> slow = list.getHead();
+		
+		while(fast.getNextNode()!=null && slow!= null && fast != null) {
+			fast = fast.getNextNode().getNextNode();
+			slow = slow.getNextNode();
+			if( slow == fast)
+				return true;
+		}
+		return false;
 	}
 
 }
