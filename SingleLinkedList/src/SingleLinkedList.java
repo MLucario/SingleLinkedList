@@ -40,15 +40,15 @@ class Node<T> implements Comparable<T> {
 	@Override
 	public int compareTo(T o) {
 		if (o == this.data)
-			return 0;
-		else
 			return 1;
+		else
+			return 0;
 	}
 }
 
 public class SingleLinkedList<T> {
 	private Node<T> head = null;
-	private Node<T> tail = null;
+	//private Node<T> tail = null;
 	private int numberNode = 0;
 
 	/**
@@ -61,7 +61,7 @@ public class SingleLinkedList<T> {
 
 		if (isEmpty()) {
 			head = aNode;
-			tail = aNode;
+			//tail = aNode;
 		} else {
 			aNode.setNextNode(head);
 			this.head = aNode;
@@ -80,9 +80,18 @@ public class SingleLinkedList<T> {
 			add(value);
 		} else {
 			Node<T> aNode = new Node<T>(value);
-			tail.setNextNode(aNode);
-			this.tail = aNode;
-			this.numberNode++;
+			//tail.setNextNode(aNode);
+			//this.tail = aNode;
+			Node<T> temp = this.head;
+			while(true) {
+				if(temp.getNextNode() == null) {
+					temp.setNextNode(aNode);
+					this.numberNode++;
+					break;
+				}
+				temp = temp.getNextNode();
+			}
+			
 		}
 		
 	}
@@ -95,33 +104,33 @@ public class SingleLinkedList<T> {
 
 	public void addAfter(T value, T after) {
 
-		Node<T> tmp = head;
-		Node<T> foundNode = null;
-		while (true) {
-			if (tmp == null)
-				break;
-			else {
-				if (tmp.compareTo(after) == 0) {
-					foundNode = tmp;
+		boolean found = false;
+		//Node<T> foundNode = null;
+		if(this.numberNode == 0) {
+			System.out.println("Empty List");
+		}
+		else {
+			Node<T> tmp = head;
+			while (true) {
+				if(tmp.getNextNode()== null) break;
+				if (tmp.getNextNode().compareTo(after)==1 ) {
+					Node<T> aNode = new Node<T>(value);
+					tmp = tmp.getNextNode();
+					aNode.setNextNode(tmp.getNextNode());
+					tmp.setNextNode(aNode);
+					this.numberNode ++;
+					found = true;
 					break;
 				}
+				else {
+					tmp = tmp.getNextNode();
+				}
+					
+				}
+				if(!found) {
+					System.out.println("Cannot find Node");
+				}
 			}
-			tmp = tmp.getNextNode();
-		}
-		if (foundNode != null) {
-			Node<T> aNode = new Node<T>(value);
-			aNode.setNextNode(foundNode.getNextNode());
-
-			if (this.tail == foundNode) {
-				tail = aNode;
-			}
-			foundNode.setNextNode(aNode);
-			this.numberNode++;
-		} else {
-			System.out.println("Cannot Find the node!");
-		}
-		
-
 	}
 
 	/**
@@ -147,30 +156,25 @@ public class SingleLinkedList<T> {
 			System.out.println("LinkedList is empty");
 		}
 		else {
+			boolean notFound = true;
 			Node<T> temp = this.head;
-			Node<T> preNode = null;
 			while(true) {
-				if(temp.compareTo(value)==0) {
-					
+				if(temp.getNextNode()== null) break;
+				//find the node has same value
+				if(temp.getNextNode().compareTo(value)==1) {
+					temp = temp.getNextNode();
+					Node<T> nodeNeedDelete = temp.getNextNode();
+					temp.setNextNode(nodeNeedDelete.getNextNode());
+					this.numberNode --;
+					notFound = false;
 					break;
 				}
-				preNode = temp;
-				temp = temp.getNextNode();
-			}
-			if(this.numberNode==1) {
-				this.head.setNextNode(null);
-				this.tail.setNextNode(null);
-				this.numberNode =0;
-			}
-			else{
-				if(preNode != null) {
-					preNode.setNextNode(temp.getNextNode());
-					
-					this.numberNode--;
-				}
 				else {
-					System.out.println("Cannot find the node");
+					temp = temp.getNextNode();
 				}
+			}
+			if(notFound) {
+				System.out.println("Cannot found the node!");
 			}
 		}
 		
@@ -220,6 +224,7 @@ public class SingleLinkedList<T> {
 		return null;
 	}
 	
+	//Insertion sort
 	public void sortLinkedList() {
 		if(isEmpty())
 			System.out.println("Empty Linked List");
@@ -230,45 +235,69 @@ public class SingleLinkedList<T> {
 		}
 	}
 
+	
+	/**Algorithm
+	 *  Find the nth node from THE END
+	 */
+	
+	public Node<T> findFromTheEnd(int n){
+		Node<T> currentNode = head;
+		Node<T> nodeFound = null;
+		
+		for(int i =0; i<n; i++) {
+			if(currentNode.getNextNode()==null) return null;
+			currentNode = currentNode.getNextNode();
+		}
+		nodeFound = head;
+		while(currentNode.getNextNode() != null) {
+			currentNode = currentNode.getNextNode();
+			nodeFound = nodeFound.getNextNode();
+		}
+		return nodeFound;
+	}
+
 	public static void main(String[] args) {
 		SingleLinkedList<Integer> list = new SingleLinkedList<Integer>();
 		
 		System.out.println("Add from the beginning");
-		list.append(18);
-		list.append(100);
-		list.append(13);
-		list.append(74);
-		list.append(15);
+		list.add(5);
+		list.add(4);
+		list.add(3);
+		list.add(2);
+		list.add(1);
 		
 		System.out.println(list.toString());
 		System.out.println(list.numberNode);
+/**
+		 
+
+		// add 12 after 11
+		System.out.println("add 6 after 5");
+		list.addAfter(6, 5);
+		System.out.println(list.toString());
+		System.out.println(list.numberNode);
 		
-//		// add 12 after 11
-//		list.addAfter(12, 11);
-//		System.out.println(list.toString());
-//		System.out.println(list.numberNode);
-//		
-//		//Add at begin
-//		list.add(0);
-//		System.out.println(list.toString());
-//		System.out.println(list.numberNode);
-//		
-//		// Delete first node
-//		
-//		list.deleteFirst();
-//		System.out.println(list.toString());
-//		System.out.println(list.numberNode);
-//		
-//		// Delete after
-//		System.out.println("Delete ");
-//		list.deleteAt(11);;
-//		System.out.println(list.toString());
-//		System.out.println(list.numberNode);
+		System.out.println("Add 7 at the end");
+		list.append(7);
+		System.out.println(list.toString());
+		System.out.println(list.numberNode);
 		
-	
+		// Delete first node
+		System.out.println("Delete first node");
+		list.deleteFirst();
+		System.out.println(list.toString());
+		System.out.println(list.numberNode);
+		
+		// Delete after
+		System.out.println("Delete ");
+		list.deleteAt(5);;
+		System.out.println(list.toString());
+		System.out.println(list.numberNode);
+		
+ */
 		
 		
-		
+		System.out.println(list.findFromTheEnd(2).getData());
 	}
 
 }
