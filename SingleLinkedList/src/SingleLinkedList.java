@@ -44,6 +44,8 @@ class Node<T> implements Comparable<T> {
 		else
 			return 0;
 	}
+	
+	
 }
 
 public class SingleLinkedList<T> {
@@ -51,6 +53,7 @@ public class SingleLinkedList<T> {
 	//private Node<T> tail = null;
 	private int numberNode = 0;
 
+	
 	/**
 	 * Inseart at the beginning of LinkedList
 	 * 
@@ -232,16 +235,18 @@ public class SingleLinkedList<T> {
 		
 	}
 	
-	//Insertion sort
-	public void sortLinkedList() {
-		if(isEmpty())
-			System.out.println("Empty Linked List");
-		else {
-			Node<T> sortedNode = null;
-			Node<T> currentNode = this.head;
-			
-		}
-	}
+//	//Insertion sort
+//	public void sortLinkedList() {
+//		if(isEmpty())
+//			System.out.println("Empty Linked List");
+//		else {
+//			for(int i =0; i < this.numberNode - 1 ; i ++) {
+//				T key = this.head.getData();
+//				int j = i - 1;
+//			}
+//			
+//		}
+//	}
 
 	
 	/**Algorithm
