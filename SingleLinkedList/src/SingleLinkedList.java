@@ -2,9 +2,6 @@
  * TODO : Need  to take out the Size of list
  */
 
-
-
-
 /**
  * Single Linked List Operation 1. Append_ add at the end 2. Add at begin 3. Add
  * at after 4. Delete first node 5. Delete after 6. Display 7. Length 9. Sort
@@ -186,14 +183,15 @@ public class SingleLinkedList<T> {
 
 	public int length() {
 		Node<T> temp = this.head;
-		int count =0;
-		while(temp!=null) {
+		int count = 0;
+		while (temp != null) {
 			count++;
 			temp = temp.getNextNode();
 		}
 		return count;
 	}
 
+	@Override
 	public String toString() {
 
 		if (isEmpty()) {
@@ -300,24 +298,24 @@ public class SingleLinkedList<T> {
 			System.out.println("Finish");
 		}
 	}
-	
-	public Node<T> getMiddleNode(){
+
+	public Node<T> getMiddleNode() {
 		Node<T> slow = head;
 		Node<T> fast = head;
 		int i = 0;
-		while(fast.getNextNode()!=null) {
+		while (fast.getNextNode() != null) {
 			//moce fast 1 time
-			if( i==0) {
+			if (i == 0) {
 				fast = fast.getNextNode();
 				i = 1;
 			}
 			//move fast 1 more time = > fast move two time of slow
-			else if( i == 1) {
+			else if (i == 1) {
 				slow = slow.getNextNode();
 				fast = fast.getNextNode();
 				i = 0;
 			}
-			
+
 		}
 		return slow;
 	}
@@ -325,129 +323,64 @@ public class SingleLinkedList<T> {
 	public Node<T> getHead() {
 		return head;
 	}
-	
+
 	public void printLinkedListFromTheEnd(Node<T> aNode) {
-		if(aNode==null) {
+		if (aNode == null) {
 			return;
-			}
-		
+		}
+
 		else {
 			printLinkedListFromTheEnd(aNode.getNextNode());
 			System.out.print(" " + aNode.getData());
 		}
-		
+
+	}
+
+	public boolean isPalindrome() {
+		// Create Reverse Single Linked List
+		if (this.length() == 1)
+			return true;
+		else if (this.length() < 1)
+			return false;
+		else {
+			Node<T> temp = this.head;
+			SingleLinkedList<T> newTemp = new SingleLinkedList<T>();
+			while (temp != null) {
+				newTemp.add(temp.getData());
+				temp = temp.getNextNode();
+			}
+			boolean flag = true;
+			Node<T> temp1 = this.head;
+			Node<T> temp2 = newTemp.getHead();
+			while (temp1.getNextNode() != null) {
+				if (temp1.compareTo(temp2.getData()) == 0)
+					return false;
+				else {
+					temp1 = temp1.getNextNode();
+					temp2 = temp2.getNextNode();
+				}
+
+			}
+			return flag;
+		}
+
 	}
 
 	public static void main(String[] args) {
-/**
-		SingleLinkedList<Integer> list = new SingleLinkedList<Integer>();
-
-		System.out.println("Add from the beginning");
-		list.add(5);
-		list.add(4);
-		list.add(3);
-		list.add(2);
-		list.add(1);
-
-		System.out.println(list.toString());
-		System.out.println(list.numberNode);
-
-		// no cycle
-		System.out.println(list.isCycle(list));
-		list.deleteCycle(list);
-
-		// Let add an cycle from node 5 to node 3
-		Node<Integer> temp = list.getNodeAt(5);
-		System.out.println(temp.getData());
-		temp.setNextNode(list.getNodeAt(3));
-		System.out.println("Cycle check : " + list.isCycle(list));
-		list.deleteCycle(list);
-		System.out.println(list.toString());
-
-		System.out.println("====Reverse====");
-		list.reverseLinkedList();
-		System.out.println("====Reverse====");
-		System.out.println(list.toString());
-		
-		System.out.println("====Reverse===========");
-	*/	
-		
-		SingleLinkedList<Integer> list1 = new SingleLinkedList<Integer>();
-		list1.append(1);
-		list1.append(3);
-		
-		SingleLinkedList<Integer> list2 = new SingleLinkedList<Integer>();
-		list2.append(1);
-		list2.append(2);
-		list2.append(3);
-		list2.append(4);
-		list2.append(5);
-		list2.append(6);
-		list2.append(7);
-		list2.append(8);
-		
-		//let add list 1 to join list 2 at Node 4
-		list1.getNodeAt(3).setNextNode(list2.getNodeAt(4));;
-		
-		System.out.println("====List 1====");
-		System.out.println(list1.toString());
-		System.out.println("====List 2====");
-		System.out.println(list2.toString());
-		
-		Node<Integer> nodeJoin = list1.findJoinNode(list1, list2);
-		System.out.println("======Join Node=====");
-		if(nodeJoin!=null)
-		System.out.println(nodeJoin.getData());
-		
-		System.out.println("=====Middle of list 1 ====");
-		Node<Integer> middle = null ;
-		middle = list1.getMiddleNode();
-		System.out.println(middle.getData());
-		
-		System.out.println("=====Middle of list 2 ====");
-		Node<Integer> middle2 = null ;
-		middle2 = list2.getMiddleNode();
-		System.out.println(middle2.getData());
-		
-		
-		System.out.println("=====Print from the end======");
-		list1.printLinkedListFromTheEnd(list1.getHead());
-		
-		
-		
-		
-		/**
-		 * 
-		 * 
-		 * // add 12 after 11 System.out.println("add 6 after 5"); list.addAfter(6, 5);
-		 * System.out.println(list.toString()); System.out.println(list.numberNode);
-		 * 
-		 * System.out.println("Add 7 at the end"); list.append(7);
-		 * System.out.println(list.toString()); System.out.println(list.numberNode);
-		 * 
-		 * // Delete first node System.out.println("Delete first node");
-		 * list.deleteFirst(); System.out.println(list.toString());
-		 * System.out.println(list.numberNode);
-		 * 
-		 * // Delete after System.out.println("Delete "); list.deleteAt(5);;
-		 * System.out.println(list.toString()); System.out.println(list.numberNode);
-		 * 
-		 */
-
-		// System.out.println(list.findFromTheEnd(2).getData());
+		TestIsPalindrome();
 	}
 
 	/*
 	 * 8 Floyd algorithm to detect cycle in linked list
 	 */
-	public boolean isCycle(SingleLinkedList<T> list){
-		
+	public boolean isCycle(SingleLinkedList<T> list) {
+
 		Node<T> fast = list.getHead();
 		Node<T> slow = list.getHead();
-		while(fast.getNextNode()!=null && slow!= null && fast != null) {
+		while (fast.getNextNode() != null && slow != null && fast != null) {
 			fast = fast.getNextNode().getNextNode();
 			slow = slow.getNextNode();
-			if( slow == fast)
+			if (slow == fast)
 				return true;
 		}
 		return false;
@@ -490,9 +423,7 @@ public class SingleLinkedList<T> {
 
 	public Node<T> findJoinNode(SingleLinkedList<T> list1, SingleLinkedList<T> list2) {
 		Node<T> result = null;
-		int L1 =0,
-				L2 =0,
-				d= 0;
+		int L1 = 0, L2 = 0, d = 0;
 		Node<T> tempHead = list1.getHead();
 		L1 = list1.length(); //take m steps
 //		while(tempHead!=null) {
@@ -500,11 +431,11 @@ public class SingleLinkedList<T> {
 //			tempHead = tempHead.getNextNode();
 //		}
 		tempHead = list2.getHead();
-		while(tempHead!=null) {
+		while (tempHead != null) {
 			L2++;
 			tempHead = tempHead.getNextNode();
 		}
-		
+
 		if (list1.length() != 0 && list2.length() != 0) {
 			// I assume temp1 is longest linked list
 			Node<T> temp1, temp2;
@@ -536,5 +467,16 @@ public class SingleLinkedList<T> {
 			System.out.println("Emtpy list error!!");
 		}
 		return result;
+	}
+
+	public static void TestIsPalindrome() {
+		SingleLinkedList<Integer> list = new SingleLinkedList<Integer>();
+		list.append(1);
+		list.append(2);
+		list.append(3);
+		list.append(1);
+		list.append(1);
+		System.out.println(list.toString());
+		System.out.println(list.isPalindrome());
 	}
 }
